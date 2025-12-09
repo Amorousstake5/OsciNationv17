@@ -89,10 +89,10 @@ Carrier Amplitude:</b> Sets volume of the main tone<br>
 <li><b>RM (Ring Modulation):</b>
 
 <b>Carrier Amplitude:</b> Sets volume of carrier signal<br>
-<img width="645" height="711" alt="image" src="https://github.com/user-attachments/assets/747d2dfb-cc56-4deb-b1a9-752c20fd93e4" />
 
 <b>Modulator Amplitude:</b> Controls modulator signal strength<br>
 <b>Creates complex harmonic sidebands</b><br>
 </li>
 </p>
 <em>Now you have full control over both signals independently, allowing for much more precise sound design and modulation effects!</em>
+<img width="645" height="711" alt="image" src="https://github.com/user-attachments/assets/747d2dfb-cc56-4deb-b1a9-752c20fd93e4" />
