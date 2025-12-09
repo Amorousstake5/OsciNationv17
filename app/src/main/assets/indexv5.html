@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequency Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .oscilloscope {
+            background: #000;
+            border: 3px solid #4a90e2;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .knob-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .knob {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #2a5298, #1e3c72);
+            border: 5px solid #4a90e2;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            touch-action: none;
+        }
+
+        .knob-indicator {
+            position: absolute;
+            width: 4px;
+            height: 45px;
+            background: #4af;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            transform-origin: center 50px;
+            border-radius: 2px;
+            box-shadow: 0 0 10px #4af;
+        }
+
+        .knob-value {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #4af;
+        }
+
+        .wave-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .wave-btn {
+            padding: 12px;
+            border: 2px solid #4a90e2;
+            background: rgba(74, 144, 226, 0.2);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .wave-btn.active {
+            background: #4a90e2;
+            box-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+        }
+
+        .wave-btn:active {
+            transform: scale(0.95);
+        }
+
+        .mod-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .mod-btn {
+            padding: 10px;
+            border: 2px solid #e24a90;
+            background: rgba(226, 74, 144, 0.2);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .mod-btn.active {
+            background: #e24a90;
+            box-shadow: 0 0 15px rgba(226, 74, 144, 0.6);
+        }
+
+        .slider-group {
+            margin-bottom: 15px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4af;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(68, 170, 255, 0.8);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4af;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(68, 170, 255, 0.8);
+        }
+
+        .slider-value {
+            text-align: right;
+            font-size: 14px;
+            margin-top: 5px;
+            color: #4af;
+        }
+
+        .play-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(145deg, #4ade80, #22c55e);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4);
+        }
+
+        .play-btn:active {
+            transform: scale(0.98);
+        }
+
+        .play-btn.playing {
+            background: linear-gradient(145deg, #ef4444, #dc2626);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎛️ Frequency Generator</h1>
+
+    <canvas class="oscilloscope" id="oscilloscope" width="560" height="200"></canvas>
+
+    <div class="controls">
+        <div class="control-group">
+            <span class="control-label">Waveform Type</span>
+            <div class="wave-buttons">
+                <button class="wave-btn active" data-wave="sine">Sine</button>
+                <button class="wave-btn" data-wave="triangle">Triangle</button>
+                <button class="wave-btn" data-wave="sawtooth">Sawtooth</button>
+                <button class="wave-btn" data-wave="square">Square</button>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <span class="control-label">Frequency (Hz)</span>
+            <div class="knob-container">
+                <div>
+                    <div class="knob" id="freqKnob">
+                        <div class="knob-indicator" id="knobIndicator"></div>
+                    </div>
+                    <div class="knob-value" id="freqValue">440 Hz</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 10px;">
+                <input type="number" id="freqInput" min="20" max="20000" value="440"
+                       style="width: 120px; padding: 8px; border: 2px solid #4a90e2; background: rgba(0,0,0,0.3);
+                           color: #fff; border-radius: 5px; font-size: 16px; text-align: center;">
+                <button id="setFreqBtn" style="padding: 8px 16px; background: #4a90e2; border: none;
+                            border-radius: 5px; color: #fff; font-weight: 600; cursor: pointer;">Set</button>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <span class="control-label">Modulation</span>
+            <div class="mod-buttons">
+                <button class="mod-btn" data-mod="fm">FM</button>
+                <button class="mod-btn" data-mod="am">AM</button>
+                <button class="mod-btn" data-mod="rm">RM</button>
+            </div>
+        </div>
+
+        <div class="slider-group" id="modControls" style="display: none;">
+            <span class="control-label">Mod Frequency</span>
+            <input type="range" class="slider" id="modFreq" min="0.1" max="50" value="5" step="0.1">
+            <div class="slider-value"><span id="modFreqValue">5.0</span> Hz</div>
+
+            <span class="control-label" style="margin-top: 15px;">Mod Depth</span>
+            <input type="range" class="slider" id="modDepth" min="0" max="100" value="50">
+            <div class="slider-value"><span id="modDepthValue">50</span>%</div>
+        </div>
+
+        <div class="slider-group">
+            <span class="control-label">Volume</span>
+            <input type="range" class="slider" id="volume" min="0" max="100" value="50">
+            <div class="slider-value"><span id="volumeValue">50</span>%</div>
+        </div>
+
+        <button class="play-btn" id="playBtn">▶ Start</button>
+    </div>
+</div>
+
+<script>
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    let oscillator = null;
+    let gainNode = null;
+    let modOscillator = null;
+    let modGain = null;
+    let isPlaying = false;
+
+    let currentWave = 'sine';
+    let currentFreq = 440;
+    let currentMod = null;
+
+    const canvas = document.getElementById('oscilloscope');
+    const ctx = canvas.getContext('2d');
+    const analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    const knob = document.getElementById('freqKnob');
+    const indicator = document.getElementById('knobIndicator');
+    const freqValue = document.getElementById('freqValue');
+    const playBtn = document.getElementById('playBtn');
+
+    let knobAngle = 0;
+    let isDragging = false;
+    let startY = 0;
+    let startAngle = 0;
+
+    function createOscillator() {
+        oscillator = audioContext.createOscillator();
+        oscillator.type = currentWave;
+        oscillator.frequency.value = currentFreq;
+
+        gainNode = audioContext.createGain();
+        const vol = document.getElementById('volume').value / 100;
+        gainNode.gain.value = vol * 0.3;
+
+        if (currentMod) {
+            modOscillator = audioContext.createOscillator();
+            modOscillator.frequency.value = parseFloat(document.getElementById('modFreq').value);
+
+            modGain = audioContext.createGain();
+            const depth = document.getElementById('modDepth').value / 100;
+
+            if (currentMod === 'fm') {
+                modGain.gain.value = currentFreq * depth;
+                modOscillator.connect(modGain);
+                modGain.connect(oscillator.frequency);
+            } else if (currentMod === 'am') {
+                modGain.gain.value = depth;
+                modOscillator.connect(modGain);
+                modGain.connect(gainNode.gain);
+            } else if (currentMod === 'rm') {
+                modGain.gain.value = 1;
+                modOscillator.connect(modGain);
+                oscillator.connect(modGain);
+                modGain.connect(gainNode);
+                gainNode.connect(analyser);
+                analyser.connect(audioContext.destination);
+                oscillator.start();
+                modOscillator.start();
+                return;
+            }
+
+            modOscillator.start();
+        }
+
+        oscillator.connect(gainNode);
+        gainNode.connect(analyser);
+        analyser.connect(audioContext.destination);
+        oscillator.start();
+    }
+
+    function stopOscillator() {
+        if (oscillator) {
+            oscillator.stop();
+            oscillator.disconnect();
+            oscillator = null;
+        }
+        if (modOscillator) {
+            modOscillator.stop();
+            modOscillator.disconnect();
+            modOscillator = null;
+        }
+        if (gainNode) {
+            gainNode.disconnect();
+            gainNode = null;
+        }
+        if (modGain) {
+            modGain.disconnect();
+            modGain = null;
+        }
+    }
+
+    function drawOscilloscope() {
+        requestAnimationFrame(drawOscilloscope);
+
+        analyser.getByteTimeDomainData(dataArray);
+
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = '#0f0';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+
+        const sliceWidth = canvas.width / bufferLength;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+            const v = dataArray[i] / 128.0;
+            const y = v * canvas.height / 2;
+
+            if (i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+
+            x += sliceWidth;
+        }
+
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height / 2);
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+    }
+
+    drawOscilloscope();
+
+    function updateKnob(angle) {
+        knobAngle = Math.max(-135, Math.min(135, angle));
+        indicator.style.transform = `translateX(-50%) rotate(${knobAngle}deg)`;
+
+        const normalized = (knobAngle + 135) / 270;
+        currentFreq = Math.round(20 + normalized * 19980);
+        freqValue.textContent = currentFreq + ' Hz';
+        freqInput.value = currentFreq;
+
+        if (oscillator) {
+            oscillator.frequency.value = currentFreq;
+            if (currentMod === 'fm' && modGain) {
+                const depth = document.getElementById('modDepth').value / 100;
+                modGain.gain.value = currentFreq * depth;
+            }
+        }
+    }
+
+    knob.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startY = e.clientY;
+        startAngle = knobAngle;
+    });
+
+    knob.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startY = e.touches[0].clientY;
+        startAngle = knobAngle;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const deltaY = startY - e.clientY;
+            const newAngle = startAngle + deltaY;
+            updateKnob(newAngle);
+        }
+    });
+
+    document.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+            const deltaY = startY - e.touches[0].clientY;
+            const newAngle = startAngle + deltaY;
+            updateKnob(newAngle);
+        }
+    });
+
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('touchend', () => isDragging = false);
+
+    const freqInput = document.getElementById('freqInput');
+    const setFreqBtn = document.getElementById('setFreqBtn');
+
+    function setFrequencyFromInput() {
+        let freq = parseInt(freqInput.value);
+        freq = Math.max(20, Math.min(20000, freq));
+        freqInput.value = freq;
+        currentFreq = freq;
+
+        const normalized = (freq - 20) / 19980;
+        knobAngle = normalized * 270 - 135;
+        indicator.style.transform = `translateX(-50%) rotate(${knobAngle}deg)`;
+        freqValue.textContent = freq + ' Hz';
+
+        if (oscillator) {
+            oscillator.frequency.value = freq;
+            if (currentMod === 'fm' && modGain) {
+                const depth = document.getElementById('modDepth').value / 100;
+                modGain.gain.value = freq * depth;
+            }
+        }
+    }
+
+    setFreqBtn.addEventListener('click', setFrequencyFromInput);
+
+    freqInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            setFrequencyFromInput();
+        }
+    });
+
+    freqInput.addEventListener('input', () => {
+        const freq = parseInt(freqInput.value) || 440;
+        if (freq >= 20 && freq <= 20000) {
+            currentFreq = freq;
+            const normalized = (freq - 20) / 19980;
+            knobAngle = normalized * 270 - 135;
+            indicator.style.transform = `translateX(-50%) rotate(${knobAngle}deg)`;
+            freqValue.textContent = freq + ' Hz';
+        }
+    });
+
+    document.querySelectorAll('.wave-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.wave-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentWave = btn.dataset.wave;
+
+            if (isPlaying) {
+                stopOscillator();
+                createOscillator();
+            }
+        });
+    });
+
+    document.querySelectorAll('.mod-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const mod = btn.dataset.mod;
+
+            if (btn.classList.contains('active')) {
+                btn.classList.remove('active');
+                currentMod = null;
+                document.getElementById('modControls').style.display = 'none';
+            } else {
+                document.querySelectorAll('.mod-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMod = mod;
+                document.getElementById('modControls').style.display = 'block';
+            }
+
+            if (isPlaying) {
+                stopOscillator();
+                createOscillator();
+            }
+        });
+    });
+
+    document.getElementById('modFreq').addEventListener('input', (e) => {
+        document.getElementById('modFreqValue').textContent = parseFloat(e.target.value).toFixed(1);
+        if (modOscillator) {
+            modOscillator.frequency.value = parseFloat(e.target.value);
+        }
+    });
+
+    document.getElementById('modDepth').addEventListener('input', (e) => {
+        document.getElementById('modDepthValue').textContent = e.target.value;
+        if (modGain && currentMod) {
+            const depth = e.target.value / 100;
+            if (currentMod === 'fm') {
+                modGain.gain.value = currentFreq * depth;
+            } else if (currentMod === 'am') {
+                modGain.gain.value = depth;
+            }
+        }
+    });
+
+    document.getElementById('volume').addEventListener('input', (e) => {
+        document.getElementById('volumeValue').textContent = e.target.value;
+        if (gainNode) {
+            gainNode.gain.value = (e.target.value / 100) * 0.3;
+        }
+    });
+
+    playBtn.addEventListener('click', () => {
+        if (!isPlaying) {
+            audioContext.resume();
+            createOscillator();
+            isPlaying = true;
+            playBtn.textContent = '⏸ Stop';
+            playBtn.classList.add('playing');
+        } else {
+            stopOscillator();
+            isPlaying = false;
+            playBtn.textContent = '▶ Start';
+            playBtn.classList.remove('playing');
+        }
+    });
+
+    updateKnob(0);
+</script>
+</body>
+</html>
