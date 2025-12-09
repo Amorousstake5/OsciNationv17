@@ -1,85 +1,96 @@
-Features:
+<h1><b>Features:</b></h1>
+<p>
+<li><b>4 Waveform Types:</b> Sine, Triangle, Sawtooth, and Square waves</li>
+<li><b>Interactive Knob:</b> Rotary frequency control (20Hz - 20kHz) with drag interaction</li>
+<li><b>Oscilloscope Visualizer:</b> Real-time waveform display with green trace</li>
+<li><b>Modulation Options:</b> FM (Frequency Modulation), AM (Amplitude Modulation), and RM (Ring Modulation)</li>
+</p>
+<p>
+<h2><b><em>Adjustable Parameters:</p></em></b></h2>
+<li>Modulation frequency (0.1-50 Hz)</li>
+<li>Modulation depth (0-100%)</li>
+<li>Volume control (0-100%)</li></b>
+</p>
+<p>
+<h2><em>New Features:</em></h2>
 
-4 Waveform Types: Sine, Triangle, Sawtooth, and Square waves
-Interactive Knob: Rotary frequency control (20Hz - 20kHz) with drag interaction
-Oscilloscope Visualizer: Real-time waveform display with green trace
-Modulation Options: FM (Frequency Modulation), AM (Amplitude Modulation), and RM (Ring Modulation)
-Adjustable Parameters:
+<li><b>Number Input Box:</b></li> Type exact frequency values (20-20000 Hz)
+<li><b>Set Button:</b></li> Apply the typed frequency
+<li><b>Enter Key Support:</b></li> Press Enter to apply the frequency
+<li><b>Real-time Sync:</b></li> The input box and knob stay synchronized:
 
-Modulation frequency (0.1-50 Hz)
-Modulation depth (0-100%)
-Volume control (0-100%)
-New Features:
-
-Number Input Box: Type exact frequency values (20-20000 Hz)
-Set Button: Apply the typed frequency
-Enter Key Support: Press Enter to apply the frequency
-Real-time Sync: The input box and knob stay synchronized
-
-Turn the knob → input box updates
-Type a number → knob position updates
+<em>Turn the knob → input box updates</em><br>
+<em>Type a number → knob position updates</em>
 
 
-Input Validation: Automatically constrains values between 20-20000 Hz
+<li><b>Input Validation:</b></li> Automatically constrains values between 20-20000 Hz
+</p>
+<p><h3>Now you can:</h3>
+<li>Use the knob for quick, intuitive adjustments</li>
+<li>Type precise frequencies like 432 Hz, 528 Hz, or any specific value you need</li>
+<b>Both controls stay perfectly in sync!</b>
+</p>
+<p>
+<h2><em>New Features:</em></h2>
+<li><b>Subsonic Frequency Support (0.1 Hz - 20 Hz)</b></li>
+<li><b>Visual Only Mode:</b> When frequency drops below 20 Hz, the app automatically switches to visual-only mode</li>
+<li><b>No Sound Output:</b> Below 20 Hz, no audio is generated (since it's outside human hearing range)</li>
+<li><b>Animated Pulse Visualization:</b> The oscilloscope shows a smooth, animated waveform that pulses at the set frequency</li>
+<li><b>Warning Indicator:</b> Yellow warning message appears: "<i>Sub-20Hz: Visual Only (No Sound)</i>"</li>
+</p>
+<p>
+<h1>How It Works:</h1>
+<li><b>0.1 - 19.9 Hz:</b> Visual pulse only, no sound</li>
+<li><b>20 - 20000 Hz:</b> Full audio + visualization</li>
+</p>
+<p>  
+<h1>Use Cases:</h1>
+<li><b>Study waveform patterns at extremely low frequencies</b></li>
+<li>Visual metronome for slow rhythms <i>(0.5 Hz = 30 BPM)</i></li>
+<li>Scientific demonstrations of infrasound frequencies</li>
+<li><b>Meditation timers with visual pulses</b></li>
+</p>
+<p><i>
+The waveform animates smoothly across the oscilloscope at whatever frequency you set - you can watch a 1 Hz pulse complete one full cycle per second, or a 0.1 Hz pulse take 10 seconds to complete!</i>
+</p>  
+<p>
+<h2>New Amplitude Controls:</h2>
+<li><b>Carrier Amplitude (Blue):</b></li>
+<p>
+<b>Controls:</b> The amplitude of the main source signal (your primary oscillator)<br>
+<b>Visibility:</b> Always visible<br>
+<b>Range:</b> 0-100%<br>
+<b>Affects the overall output level</b></p>
 
-Now you can:
+<p>
+<li><b>Modulator Amplitude (Pink):</b></li>
+<p>
+<b>Controls:</b> The amplitude of the modulation signal<br>
+<b>Only appears when FM, AM, or RM modulation is active</b>
+<b>Range:</b> 0-100%
+<b>Works independently from the carrier</b>
+</p>
+</p>
+<p>
+<h2>How They Work Together:</h2>
+<li><b>FM (Frequency Modulation):
 
-Use the knob for quick, intuitive adjustments
-Type precise frequencies like 432 Hz, 528 Hz, or any specific value you need
-Both controls stay perfectly in sync!
-New Features:
-Subsonic Frequency Support (0.1 Hz - 20 Hz)
+Carrier Amplitude:</b> Sets volume of the main tone<br>
+<b>Modulator Amplitude:</b> Controls how much the modulator affects frequency deviation<br>
+<b>Mod Depth:</b> Sets the range of frequency variation<br>
+</li>
 
-Visual Only Mode: When frequency drops below 20 Hz, the app automatically switches to visual-only mode
-No Sound Output: Below 20 Hz, no audio is generated (since it's outside human hearing range)
-Animated Pulse Visualization: The oscilloscope shows a smooth, animated waveform that pulses at the set frequency
-Warning Indicator: Yellow warning message appears: "⚠️ Sub-20Hz: Visual Only (No Sound)"
+<li><b>AM (Amplitude Modulation):</b>
 
-How It Works:
+<b>Carrier Amplitude:</b> Sets base volume level<br>
+<b>Modulator Amplitude:</b> Controls strength of amplitude variation<br>
+<b>Mod Depth:</b> Sets depth of volume modulation<br>
+</li>
+<li><b>RM (Ring Modulation):</b>
 
-0.1 - 19.9 Hz: Visual pulse only, no sound
-20 - 20000 Hz: Full audio + visualization
-
-Use Cases:
-
-Study waveform patterns at extremely low frequencies
-Visual metronome for slow rhythms (0.5 Hz = 30 BPM)
-Scientific demonstrations of infrasound frequencies
-Meditation timers with visual pulses
-
-The waveform animates smoothly across the oscilloscope at whatever frequency you set - you can watch a 1 Hz pulse complete one full cycle per second, or a 0.1 Hz pulse take 10 seconds to complete!
-New Amplitude Controls:
-Carrier Amplitude (Blue)
-
-Controls the amplitude of the main source signal (your primary oscillator)
-Always visible
-Range: 0-100%
-Affects the overall output level
-
-Modulator Amplitude (Pink)
-
-Controls the amplitude of the modulation signal
-Only appears when FM, AM, or RM modulation is active
-Range: 0-100%
-Works independently from the carrier
-
-How They Work Together:
-FM (Frequency Modulation):
-
-Carrier Amplitude: Sets volume of the main tone
-Modulator Amplitude: Controls how much the modulator affects frequency deviation
-Mod Depth: Sets the range of frequency variation
-
-AM (Amplitude Modulation):
-
-Carrier Amplitude: Sets base volume level
-Modulator Amplitude: Controls strength of amplitude variation
-Mod Depth: Sets depth of volume modulation
-
-RM (Ring Modulation):
-
-Carrier Amplitude: Sets volume of carrier signal
-Modulator Amplitude: Controls modulator signal strength
-Creates complex harmonic sidebands
-
-Now you have full control over both signals independently, allowing for much more precise sound design and modulation effects!
+<b>Carrier Amplitude:</b> Sets volume of carrier signal<br>
+<b>Modulator Amplitude:</b> Controls modulator signal strength<br>
+<b>Creates complex harmonic sidebands</b><br>
+</li>
+</p>
+<em>Now you have full control over both signals independently, allowing for much more precise sound design and modulation effects!</em>
